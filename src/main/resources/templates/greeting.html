@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+
+
+<!--<script type="text/javascript" th:src="@{/script.js}" defer></script>-->
+    <script th:inline="javascript" defer>
+        const initialValues = [[${products}]]
+        console.log(initialValues)
+
+        const increaseValue = (element) => {
+            const countId = element.getAttribute("data-product-id")
+            const productCountEl = document.getElementById(countId)
+            const productName = element.getAttribute("data-product-name")
+
+            const newVal = parseInt(productCountEl.textContent) + 1
+            productCountEl.textContent = newVal
+
+            for (const value of initialValues) {
+                if (value.name === productName && value.count == parseInt(newVal)) {
+                    console.log("Equal")
+                }
+            }
+        }
+
+        const decreaseValue = (element) => {
+            const countId = element.getAttribute("data-product-id")
+            const productCountEl = document.getElementById(countId)
+            const productName = element.getAttribute("data-product-name")
+
+            const newVal = parseInt(productCountEl.textContent) - 1
+            productCountEl.textContent = newVal
+
+            for (const value of initialValues) {
+                if (value.name === productName && value.count === newVal) {
+                    console.log("Equal")
+                }
+            }
+        }
+
+
+
+
+    </script>
+    <link rel="stylesheet" type="text/css" th:href="@{/styles.css}">
+<!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
+<!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">-->
+
+</head>
+<body>
+<h1>Данные по заказам сегодня</h1>
+
+<div class="products">
+    <div th:each="product: ${products}" th:id="${product.getName()} + '_wrap'" class="wrap">
+        <div class="name_and_count">
+            <p th:text="${product.getName()}" th:id="${product.getName()}"></p>
+        </div>
+
+        <div class="right__side">
+            <p th:text="${product.getCount()}" th:id="${product.getName() }+ '_count'"></p>
+            <div class="button__group">
+                <button class="change__button" th:data-product-id="${product.getName()} + '_count'" th:data-product-name="${product.getName()}" onclick="increaseValue(this)">+</button>
+                <button class="change__button" th:data-product-id="${product.getName()} + '_count'" th:data-product-name="${product.getName()}" onclick="decreaseValue(this)">-</button>
+            </div>
+        </div>
+
+    </div>
+    <button id="update">Update</button>
+</div>
+
+
+</body>
+</html>
