@@ -149,3 +149,24 @@ h1 {
 .update__product >button {
 
 }
+
+.add__comment {
+    display: none;
+}
+
+.add__comment  > form {
+    display:block;
+    width: 100%;
+}
+
+#comment {
+    font-size: 2rem;
+    margin-top: 50px;
+    margin-bottom:50px;
+    height: 80px;
+    width: 100%;
+}
+
+#submit_new_comment {
+     font-size: 2rem;
+}

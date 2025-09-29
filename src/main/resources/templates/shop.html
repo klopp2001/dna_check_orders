@@ -26,7 +26,15 @@
                 <input type="submit" value="Обновить" id="submit_update_value"/>
             </form>
         </div>
-        <div class="add__comment"></div>
+
+        <div class="add__comment">
+            <form>
+                <label for="comment">Введите комментарий</label>
+                <input type="text" id="comment">
+                <input type="submit" value="Обновить" id="submit_new_comment"/>
+            </form>
+        </div>
+
         <div class="success"></div>
     </div>
 </div>
@@ -42,15 +50,15 @@
             <p th:text="${product.getCount()}" th:id="${product.getName() }+ '_count'"></p>
             <div class="button__group">
                 <button class="change__button" th:data-product-id="${product.getName()} + '_count'" th:data-product-name="${product.getName()}" onclick="showUpdateModal(this)">Update</button>
-                <button class="change__button" th:data-product-id="${product.getName()} + '_count'" th:data-product-name="${product.getName()}" onclick="decreaseValue(this)">❌</button>
+                <button class="change__button" th:data-product-id="${product.getName()} + '_count'" th:data-product-name="${product.getName()}" onclick="deleteValue(this)" id="delete_prod_but">❌</button>
             </div>
         </div>
 
     </div>
-
+<div class="comment"></div>
 </div>
     <div class="command__buttons">
-        <button id="comment__button">Добавить комментарий</button>
+        <button id="comment__button" onclick="showCommentModal(this)">Добавить комментарий</button>
         <button id="update__button">Обновить</button>
     </div>
 
@@ -60,8 +68,12 @@
 
     let activeCountId = -1;
     let activeProductName = ''
+    let activeModal = {}
+
 
     const updateProductModal = document.querySelector('.update__product')
+    const commentModal = document.querySelector('.add__comment')
+
     const outerModal = document.querySelector('.modal__box')
     const innerModal = document.querySelector('.modal')
 
@@ -77,7 +89,7 @@
                 console.log("Equal")
             }
         }
-    }
+   }
 
     const increaseValue = (element) => {
         const countId = element.getAttribute("data-product-id")
@@ -109,6 +121,37 @@
         }
     }
 
+    const revertValue = (element) => {
+        const countId = element.getAttribute("data-product-id")
+        const productCountEl = document.getElementById(countId)
+
+        const productName = element.getAttribute("data-product-name")
+
+       for (const value of initialValues) {
+            if (value.name === productName) {
+                productCountEl.textContent = value.count
+            }
+        }
+
+         document.getElementById(productName + '_wrap').style.backgroundColor = 'green'
+    }
+
+    const deleteValue = (element) => {
+        const countId = element.getAttribute("data-product-id")
+        const productCountEl = document.getElementById(countId)
+
+        if (productCountEl.textContent == '0') {
+            revertValue(element)
+            return;
+        }
+
+        const productName = element.getAttribute("data-product-name")
+
+        productCountEl.textContent = 0
+
+        document.getElementById(productName + '_wrap').style.backgroundColor = 'red'
+    }
+
     const showModal = () => {
         outerModal.style.display = 'flex'
         body.style.overflow = 'hidden'
@@ -117,12 +160,15 @@
     const closeModal = () => {
         outerModal.style.display = 'none'
         body.style.overflow = 'visible'
+        activeModal.style.display = 'none'
     }
 
     const showUpdateModal = (element) => {
         showModal()
 
         updateProductModal.style.display = 'flex'
+        activeModal = updateProductModal
+
         activeCountId = element.getAttribute("data-product-id")
         activeProductName = element.getAttribute("data-product-name")
         document.getElementById('updateProductName').textContent = activeProductName
@@ -138,13 +184,18 @@
 
     outerModal.onclick = (event) => {
         console.log("Outer clicked")
-        outerModal.style.display = 'none'
-        body.style.overflow = 'visible'
+        closeModal()
     }
 
     innerModal.onclick = (event) => {
         event.stopPropagation()
         console.log('inner clicked')
+    }
+
+    const showCommentModal = (element) => {
+        showModal()
+        commentModal.style.display='flex'
+        activeModal = commentModal
     }
 
     document.getElementById('submit_update_value').onclick = (event) => updateProductCountSubmit(event)
