@@ -2,7 +2,6 @@ body {
     font-family: "Inter", sans-serif;
     font-size: 2.5rem;
     margin: 20px 0px;
-    overflow: hidden;
 }
 
 h1 {
@@ -94,20 +93,23 @@ h1 {
     width: 70%;
     border:  2px solid black;
     border-radius: 50px;
-    padding: 30px;
+    padding: 80px 30px ;
+    display: flex;
 }
 
 
 
+
+
 .modal__box{
-  position: absolute;
+  position: fixed;
   background-color: #919191b5;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
 
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
 }
@@ -123,4 +125,27 @@ h1 {
 }
 
 .success {
+}
+
+
+.update__product > form {
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+}
+
+#new_count {
+    height:50px;
+    font-size: 3rem;
+    border: 1px solid black;
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+#submit_update_value{
+    font-size: 40px;
+}
+
+.update__product >button {
+
 }

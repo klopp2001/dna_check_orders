@@ -20,8 +20,11 @@
 <div class="modal__box" >
     <div class="modal" >
         <div class="update__product">
-            <span id="update__product__id"></span>
-
+            <form>
+                <label for="new_count">Введите новое значение продукта <span id="updateProductName"></span></label>
+                <input type="text" id="new_count">
+                <input type="submit" value="Обновить" id="submit_update_value"/>
+            </form>
         </div>
         <div class="add__comment"></div>
         <div class="success"></div>
@@ -38,8 +41,8 @@
         <div class="right__side">
             <p th:text="${product.getCount()}" th:id="${product.getName() }+ '_count'"></p>
             <div class="button__group">
-                <button class="change__button" th:data-product-id="${product.getName()} + '_count'" th:data-product-name="${product.getName()}" onclick="increaseValue(this)">+</button>
-                <button class="change__button" th:data-product-id="${product.getName()} + '_count'" th:data-product-name="${product.getName()}" onclick="decreaseValue(this)">-</button>
+                <button class="change__button" th:data-product-id="${product.getName()} + '_count'" th:data-product-name="${product.getName()}" onclick="showUpdateModal(this)">Update</button>
+                <button class="change__button" th:data-product-id="${product.getName()} + '_count'" th:data-product-name="${product.getName()}" onclick="decreaseValue(this)">❌</button>
             </div>
         </div>
 
@@ -55,9 +58,26 @@
 <script defer th:inline="javascript" >
     const body = document.querySelector('body')
 
+    let activeCountId = -1;
+    let activeProductName = ''
+
+    const updateProductModal = document.querySelector('.update__product')
+    const outerModal = document.querySelector('.modal__box')
+    const innerModal = document.querySelector('.modal')
 
     const initialValues = [[${products}]]
     console.log(initialValues)
+
+    const updateValue = (newVal) => {
+        const productCountEl = document.getElementById(activeCountId)
+        productCountEl.textContent = newVal
+
+        for (const value of initialValues) {
+            if (value.name === activeProductName && value.count == parseInt(newVal)) {
+                console.log("Equal")
+            }
+        }
+    }
 
     const increaseValue = (element) => {
         const countId = element.getAttribute("data-product-id")
@@ -89,8 +109,33 @@
         }
     }
 
-    const outerModal = document.querySelector('.modal__box')
-    const innerModal = document.querySelector('.modal')
+    const showModal = () => {
+        outerModal.style.display = 'flex'
+        body.style.overflow = 'hidden'
+    }
+
+    const closeModal = () => {
+        outerModal.style.display = 'none'
+        body.style.overflow = 'visible'
+    }
+
+    const showUpdateModal = (element) => {
+        showModal()
+
+        updateProductModal.style.display = 'flex'
+        activeCountId = element.getAttribute("data-product-id")
+        activeProductName = element.getAttribute("data-product-name")
+        document.getElementById('updateProductName').textContent = activeProductName
+    }
+
+    const updateProductCountSubmit = (event) => {
+        event.preventDefault()
+        updateValue(document.getElementById('new_count').value)
+        document.getElementById(activeProductName + '_wrap').style.backgroundColor = '#FFEE8C'
+        closeModal()
+    }
+
+
     outerModal.onclick = (event) => {
         console.log("Outer clicked")
         outerModal.style.display = 'none'
@@ -102,6 +147,7 @@
         console.log('inner clicked')
     }
 
+    document.getElementById('submit_update_value').onclick = (event) => updateProductCountSubmit(event)
 
 </script>
 
