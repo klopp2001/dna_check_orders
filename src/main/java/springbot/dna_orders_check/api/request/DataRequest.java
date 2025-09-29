@@ -1,4 +1,4 @@
-package springbot.dna_orders_check.request;
+package springbot.dna_orders_check.api.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

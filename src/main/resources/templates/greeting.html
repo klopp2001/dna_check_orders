@@ -53,24 +53,15 @@
 
 </head>
 <body>
-<h1>Данные по заказам сегодня</h1>
+<h1>Выберите точку на отправку</h1>
 
-<div class="products">
-    <div th:each="product: ${products}" th:id="${product.getName()} + '_wrap'" class="wrap">
-        <div class="name_and_count">
-            <p th:text="${product.getName()}" th:id="${product.getName()}"></p>
-        </div>
-
-        <div class="right__side">
-            <p th:text="${product.getCount()}" th:id="${product.getName() }+ '_count'"></p>
-            <div class="button__group">
-                <button class="change__button" th:data-product-id="${product.getName()} + '_count'" th:data-product-name="${product.getName()}" onclick="increaseValue(this)">+</button>
-                <button class="change__button" th:data-product-id="${product.getName()} + '_count'" th:data-product-name="${product.getName()}" onclick="decreaseValue(this)">-</button>
-            </div>
-        </div>
-
-    </div>
-    <button id="update">Update</button>
+<div class="page__select">
+    <a href="http://localhost:8083/page/чапа">
+        Чапа
+    </a>
+    <a href = "http://localhost:8083/page/DNA">
+        DNA
+    </a>
 </div>
 
 
